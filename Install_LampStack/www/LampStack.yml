@@ -26,7 +26,7 @@
            dest: /var/www/html/info.php
        notify:
            Ensuring apache is enabled   
-    handlers:
+  handlers:
        - name: Ensuring apache is enabled
          ansible.builtin.service:
             name: "{{apache_package_name}}"
