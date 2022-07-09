@@ -17,8 +17,8 @@
        ansible.builtin.apt:
            name: "{{item}}"
            state: present
-        loop: "{{php_packages}}"
-        notify:
+       loop: "{{php_packages}}"
+       notify:
            Ensuring apache is enabled
       - name: copy the php info page
         ansible.builtin.copy:
