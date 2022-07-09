@@ -1,0 +1,36 @@
+---
+- name: Install Lamp Stack
+  become: yes
+  hosts: all
+  tasks:
+     - name: update ubuntu packages
+       apt:
+         update_cache: yes
+     - name: Install apache
+       ansible.builtin.apt:
+          name: "{{apache_package_name}}"
+          state: present
+          update_cache: yes
+        notify:
+           Ensuring apache is enabled
+      - name: Install PHP Packages
+        ansible.builtin.apt:
+           name: "{{item}}"
+           state: present
+        loop: "{{php_packages}}"
+        notify:
+           Ensuring apache is enabled
+      - name: copy the php info page
+        ansible.builtin.copy:
+           src: www/info.php
+           dest: /var/www/html/info.php
+         notify:
+           Ensuring apache is enabled   
+    handlers:
+       - name: Ensuring apache is enabled
+         ansible.builtin.service:
+            name: "{{apache_package_name}}"
+            enabled: yes
+            state: restarted
+        
+      
