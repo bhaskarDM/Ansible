@@ -14,7 +14,7 @@
        notify:
            Ensuring apache is enabled
      - name: Install PHP Packages
-        ansible.builtin.apt:
+       ansible.builtin.apt:
            name: "{{item}}"
            state: present
         loop: "{{php_packages}}"
