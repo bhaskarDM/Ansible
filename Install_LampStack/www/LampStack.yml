@@ -20,11 +20,11 @@
        loop: "{{php_packages}}"
        notify:
            Ensuring apache is enabled
-      - name: copy the php info page
-        ansible.builtin.copy:
+     - name: copy the php info page
+       ansible.builtin.copy:
            src: www/info.php
            dest: /var/www/html/info.php
-        notify:
+       notify:
            Ensuring apache is enabled   
     handlers:
        - name: Ensuring apache is enabled
