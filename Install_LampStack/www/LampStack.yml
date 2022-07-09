@@ -13,7 +13,7 @@
           update_cache: yes
        notify:
            Ensuring apache is enabled
-      - name: Install PHP Packages
+     - name: Install PHP Packages
         ansible.builtin.apt:
            name: "{{item}}"
            state: present
