@@ -11,7 +11,7 @@
           name: "{{apache_package_name}}"
           state: present
           update_cache: yes
-        notify:
+       notify:
            Ensuring apache is enabled
       - name: Install PHP Packages
         ansible.builtin.apt:
@@ -24,7 +24,7 @@
         ansible.builtin.copy:
            src: www/info.php
            dest: /var/www/html/info.php
-         notify:
+        notify:
            Ensuring apache is enabled   
     handlers:
        - name: Ensuring apache is enabled
