@@ -8,7 +8,7 @@
          update_cache: yes
      - name: Install apache
        ansible.builtin.apt:
-          name: "{{ apache_package_name }}"
+          name: apache2
           state: present
           update_cache: yes
        notify:
@@ -29,7 +29,7 @@
   handlers:
        - name: Ensuring apache is enabled
          ansible.builtin.service:
-            name: "{{apache_package_name}}"
+            name: apache2
             enabled: yes
             state: restarted
         
