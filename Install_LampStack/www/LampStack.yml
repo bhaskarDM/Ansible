@@ -8,7 +8,7 @@
          update_cache: yes
      - name: Install apache
        ansible.builtin.apt:
-          name: "{{apache_package_name}}"
+          name: "{{ apache_package_name }}"
           state: present
           update_cache: yes
        notify:
