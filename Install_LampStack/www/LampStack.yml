@@ -33,7 +33,7 @@
            Ensuring apache is enabled
      - name: copy the php info page
        ansible.builtin.copy:
-           src: www/info.php
+           remote_src: www/info.php
            dest: /var/www/html/info.php
        notify:
            Ensuring apache is enabled   
