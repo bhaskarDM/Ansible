@@ -13,11 +13,22 @@
           update_cache: yes
        notify:
            Ensuring apache is enabled
-     - name: Install PHP Packages
+     - name: Install PHP Package1
        ansible.builtin.apt:
-           name: "{{item}}"
+           name: php
            state: present
-       loop: "{{php_packages}}"
+       notify:
+           Ensuring apache is enabled
+     - name: Install PHP Package2
+       ansible.builtin.apt:
+           name: libapache2-mod-php
+           state: present
+       notify:
+           Ensuring apache is enabled
+     - name: Install PHP Package3
+       ansible.builtin.apt:
+           name: php-mysql
+           state: present
        notify:
            Ensuring apache is enabled
      - name: copy the php info page
