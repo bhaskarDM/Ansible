@@ -1,17 +1,9 @@
 ---
 - name: install java on both ubuntu and redhar
-  hosts: all
+  hosts: appserver
   become: yes
   tasks:
-    - name: install java on ubuntu
-      ansible.builtin.apt:
-        name: openjdk-11-jdk
-        update_cache: yes
+    - name: install java on ubuntu and redhat
+      ansible.builtin.package:
+        name: "{{ java_package }}"
         state: present
-      when: ansible_facts['os_family']=="Debian"
-    - name: install java on redhat
-      ansible.builtin.yum:
-        name: java-11-openjdk
-        update_cache: yes
-        state: present
-      when: ansible_facts['os_family']=="Redhat"
