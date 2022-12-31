@@ -1,0 +1,10 @@
+---
+- name: install java on redhat
+  hosts: all
+  become: yes
+  tasks:
+    - name: installing java on redhat
+      ansible.builtin.yum:
+        name: java-11-openjdk
+        update_cache: yes
+        state: present
