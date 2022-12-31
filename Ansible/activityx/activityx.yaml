@@ -1,0 +1,16 @@
+---
+- name: install java on both ubuntu and redhar
+  hosts: all
+  become: yes
+  tasks:
+    - name: install java on ubuntu
+      ansible.builtin.apt:
+        name: openjdk11-11-jdk
+        update_cache: yes
+        state: present
+    - name: install java on redhat
+      ansible.builtin.yum:
+        name: java-11-openjdk
+        update_cache: yes
+        state: present
+        
