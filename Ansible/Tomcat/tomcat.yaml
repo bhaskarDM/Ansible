@@ -1,0 +1,13 @@
+---
+- name: installing tomcat
+  become: yes
+  hosts: all
+  tasks:
+    - name: create a system user
+      ansible.builtin.user:
+        home: /opt/tomcat
+        name: tomcat
+        group: tomcat
+        shell: /bin/file
+      when: anisble_facts['os_family']=="Debian"
+       
