@@ -33,7 +33,10 @@
       when: ansible_facts['os_family']=="Debian"
     - name: extract zip files
       ansible.builtin.unarchive:
+        creates: "{{ home_dir }}/apache-tomcat-{{ tomcat_version }}"
         src: "/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz"
-        dest: "{{ home_dir }}"
+        dest: "{{ home_dir }}/apache-tomcat-{{ tomcat_version }}"
         remote_src: true
+        group: "{{ user_name }}"
+        user: "{{ user_name }}"
       when: ansible_facts['os_family']=="Debian"
