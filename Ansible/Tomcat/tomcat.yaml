@@ -49,3 +49,11 @@
         group: "{{ user_name }}"
         state: link
       when: ansible_facts['os_family']=="Debian"
+    - name: change ownership to tomcat user
+      ansible.builtin.file:
+        path: "{{ home_dir }}"
+        state: directory
+        recurse: yes
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+      when: ansible_facts['os_family']=="Debian"
