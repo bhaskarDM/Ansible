@@ -8,6 +8,10 @@
     - default_shell: /bin/false
     - tomcat_version: 9.0.70
   tasks:
+    - name: update cache
+      apt:
+        update_cache: yes
+      when: ansible_facts['os_family']=="Debian"
     - name: install java
       ansible.builtin.apt:
         update_cache: yes
@@ -24,6 +28,6 @@
       when: ansible_facts['os_family']=="Debian"
     - name: download tomcat
       ansible.builtin.get_url:
-        url: "https://www-eu.apache.org/dist/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz -P /tmp"
+        url: "https://www-eu.apache.org/dist/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
         dest: "/tmp/bin/apache-tomcat-{{ tomcat-version }}.tar.gz"
       when: ansible_facts['os_family']=="Debian"
