@@ -42,7 +42,7 @@
         user: "{{ user_name }}"
       when: ansible_facts['os_family']=="Debian"
     - name: create sym link
-      ansible.builtin.file module:
+      ansible.builtin.file:
         src: "{{ home_dir }}/apache-tomcat-{{ tomcat_version }}"
         dest: "{{ tomcat_latest }}"
         owner: "{{ user_name }}"
