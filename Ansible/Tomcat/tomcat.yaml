@@ -2,6 +2,10 @@
 - name: installing tomcat
   become: yes
   hosts: all
+  vars:
+    - home_dir: /opt/tomcat
+    - user_name: tomcat
+    - default_shell: /bin/false
   tasks:
     - name: install java
       ansible.builtin.apt:
@@ -12,8 +16,8 @@
     - name: create a system user
       ansible.builtin.user:
         create_home: yes
-        name: tomcat
-        home: /opt/tomcat
-        shell: /bin/false
+        name: "{{ user_name }}"
+        home: "{{ home_dir }}"
+        shell: "{{ default_shell }}"
         state: present
       when: ansible_facts['os_family']=="Debian"
