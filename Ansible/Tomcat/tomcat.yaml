@@ -6,6 +6,7 @@
     - home_dir: /opt/tomcat
     - user_name: tomcat
     - default_shell: /bin/false
+    - tomcat-version: 9.0.70
   tasks:
     - name: install java
       ansible.builtin.apt:
@@ -20,4 +21,9 @@
         home: "{{ home_dir }}"
         shell: "{{ default_shell }}"
         state: present
+      when: ansible_facts['os_family']=="Debian"
+    - name: download tomcat
+      ansible.builtin.get_url:
+        url: https://www-eu.apache.org/dist/tomcat/tomcat-9/v${VERSION}/bin/apache-tomcat-{{ tomcat-version }}.tar.gz -P /tmp
+        dest: /tmp/bin/apache-tomcat-{{ tomcat-version }}.tar.gz
       when: ansible_facts['os_family']=="Debian"
