@@ -10,6 +10,7 @@
     - tomcat_latest: /opt/tomcat/latest
     - tomcat_bin_directory: /opt/tomcat/latest/bin/
     - tomcat_service_location: /etc/systemd/system/tomcat.service
+    - java_home: /usr/lib/jvm/java-11-openjdk-amd64
   tasks:
     - name: update cache
       apt:
@@ -74,16 +75,24 @@
       loop: "{{ sh_files_tomcat_bin.files }}"
       when: ansible_facts['os_family']=="Debian"
     - name: copy tomcat service file
-      ansible.builtin.copy:
-        src: tomcat.service
+      ansible.builtin.template:
+        src: tomcat.service.j2
         dest: "{{ tomcat_service_location }}"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
       when: ansible_facts['os_family']=="Debian"
+      notify:
+        - to reload,enable and start service
+    - name: ensure tomcat service is running
+      ansible.builtin.systemd:
+        name: 'tomcat.service'
+        state: started
+      when: ansible_facts['os_family']=="Debian"
+  handlers:
     - name: to reload,enable and start service
       ansible.builtin.systemd:
         name: tomcat.service
         daemon_reload: true
         enabled: true
-        state: started
+        state: restarted
       when: ansible_facts['os_family']=="Debian"
