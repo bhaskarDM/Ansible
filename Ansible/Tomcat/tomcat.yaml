@@ -7,6 +7,7 @@
     - user_name: tomcat
     - default_shell: /bin/false
     - tomcat_version: 9.0.70
+    - tomcat_latest: /opt/tomcat/latest
   tasks:
     - name: update cache
       apt:
@@ -39,4 +40,12 @@
         remote_src: true
         group: "{{ user_name }}"
         user: "{{ user_name }}"
+      when: ansible_facts['os_family']=="Debian"
+    - name: create sym link
+      ansible.builtin.file module:
+        src: "{{ home_dir }}/apache-tomcat-{{ tomcat_version }}"
+        dest: "{{ tomcat_latest }}"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        state: link
       when: ansible_facts['os_family']=="Debian"
