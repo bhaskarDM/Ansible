@@ -8,7 +8,7 @@
         update_cache: yes
         name: openjdk-11-jdk
         state: present
-      when: ansible_facts['os-family']=="Debian"
+      when: ansible_facts['os_family']=="Debian"
     - name: create a system user
       ansible.builtin.user:
         create_home: yes
@@ -17,4 +17,4 @@
         home: /opt/tomcat
         shell: /bin/false
         state: present
-      when: ansible_facts['os-family']=="Debian"
+      when: ansible_facts['os_family']=="Debian"
