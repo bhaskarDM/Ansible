@@ -80,3 +80,10 @@
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
       when: ansible_facts['os_family']=="Debian"
+    - name: to reload,enable and start service
+      ansible.builtin.systemd:
+        name: tomcat.service
+        daemon_reload: true
+        enabled: true
+        state: started
+      when: ansible_facts['os_family']=="Debian"
