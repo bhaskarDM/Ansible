@@ -12,7 +12,6 @@
     - name: create a system user
       ansible.builtin.user:
         create_home: yes
-        group: tomcat
         name: tomcat
         home: /opt/tomcat
         shell: /bin/false
