@@ -35,3 +35,5 @@
       ansible.builtin.unarchive:
         src: "/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz"
         dest: "{{ home_dir }}"
+        remote_src: true
+      when: ansible_facts['os_family']=="Debian"
