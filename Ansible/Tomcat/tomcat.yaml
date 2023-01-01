@@ -3,11 +3,19 @@
   become: yes
   hosts: all
   tasks:
+    - name: install java
+      ansible.builtin.apt:
+        update_cache: yes
+        name: openjdk-11-jdk
+        state: present
+      when: ansible_facts['os_family']=="Debian"
     - name: create a system user
       ansible.builtin.user:
-        home: /opt/tomcat
-        name: tomcat
+        create_home: yes
         group: tomcat
-        shell: /bin/file
-      when: anisble_facts['os_family']=="Debian"
+        name: tomcat
+        home: /opt/tomcat
+        shell: /bin/false
+        state: present
+      when: ansible_facts['os_family']=="Debian"
        
