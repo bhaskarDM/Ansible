@@ -87,7 +87,7 @@
       meta: flush_handlers
     - name: ensure tomcat service is running
       ansible.builtin.systemd:
-        name: 'tomcat.service'
+        name: 'tomcat.service.j2'
         state: 'started'
       when: ansible_facts['os_family']=="Debian"
   handlers:
