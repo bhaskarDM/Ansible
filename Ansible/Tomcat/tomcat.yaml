@@ -8,11 +8,18 @@
     - default_shell: /bin/false
     - tomcat_version: 9.0.70
     - tomcat_latest: /opt/tomcat/latest
+    - tomcat_bin_directory: /opt/tomcat/latest/bin/
   tasks:
     - name: update cache
       apt:
         update_cache: yes
       when: ansible_facts['os_family']=="Debian"
+    - name: find all sh files
+      ansible.builtin.find:
+        paths: "{{ tomcat_bin_directory }}"
+        patterns: "*.sh"
+      when: ansible_facts['os_family']=="Debian"
+      register: sh_files_tomcat_bin
     - name: install java
       ansible.builtin.apt:
         update_cache: yes
@@ -56,4 +63,12 @@
         recurse: yes
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
+      when: ansible_facts['os_family']=="Debian"
+    - name: make all shell scripts executable
+      ansible.builtin.file:
+         path: '{{ item.path }}'
+         owner: "{{ user_name }}"
+         group: "{{ user_name }}"
+         mode: '0755'
+      loop: "{{ sh_files_tomcat_bin.files }}"
       when: ansible_facts['os_family']=="Debian"
