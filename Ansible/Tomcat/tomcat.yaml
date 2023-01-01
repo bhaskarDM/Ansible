@@ -28,6 +28,6 @@
       when: ansible_facts['os_family']=="Debian"
     - name: download tomcat
       ansible.builtin.get_url:
-        url: "https://dlcdn.apache.org/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
-        dest: "/tmp/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
+        url: "https://www-eu.apache.org/dist/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz -P /tmp"
+        dest: "/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz"
       when: ansible_facts['os_family']=="Debian"
