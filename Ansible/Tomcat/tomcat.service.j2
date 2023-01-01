@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=forking
 
-User="{{ user_name }}"
-Group="{{ user_name }}"
+User={{ user_name }}
+Group={{ user_name }}
 
 Environment="JAVA_HOME={{ java_home }}"
 Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true"
