@@ -124,7 +124,7 @@
         dest: "{{ tomcat_latest }}/webapps/{{ deploy_filename }}"
       when: ansible_facts['os_family'] == "Debian"
       notify:
-        - reload the daemon, enable and start the tomcat service
+        - to reload,enable and start service
   handlers:
     - name: to reload,enable and start service
       ansible.builtin.systemd:
