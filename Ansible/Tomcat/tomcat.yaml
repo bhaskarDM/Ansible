@@ -1,7 +1,7 @@
 ---
 - name: installing tomcat
   become: yes
-  hosts: all
+  hosts: appserver
   vars:
     - home_dir: /opt/tomcat
     - user_name: tomcat
@@ -29,14 +29,12 @@
       ansible.builtin.find:
         paths: "{{ tomcat_bin_directory }}"
         patterns: "*.sh"
-      when: ansible_facts['os_family']=="Debian"
       register: sh_files_tomcat_bin
     - name: install java
-      ansible.builtin.apt:
+      ansible.builtin.package:
         update_cache: yes
         name: openjdk-11-jdk
         state: present
-      when: ansible_facts['os_family']=="Debian"
     - name: create a system user
       ansible.builtin.user:
         create_home: yes
@@ -44,12 +42,10 @@
         home: "{{ home_dir }}"
         shell: "{{ default_shell }}"
         state: present
-      when: ansible_facts['os_family']=="Debian"
     - name: download tomcat
       ansible.builtin.get_url:
         url: "https://www-eu.apache.org/dist/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
         dest: "/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz"
-      when: ansible_facts['os_family']=="Debian"
     - name: extract zip files
       ansible.builtin.unarchive:
         creates: "{{ home_dir }}/apache-tomcat-{{ tomcat_version }}"
@@ -58,7 +54,6 @@
         remote_src: true
         group: "{{ user_name }}"
         user: "{{ user_name }}"
-      when: ansible_facts['os_family']=="Debian"
     - name: create sym link
       ansible.builtin.file:
         src: "{{ home_dir }}/apache-tomcat-{{ tomcat_version }}"
@@ -66,7 +61,6 @@
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
         state: link
-      when: ansible_facts['os_family']=="Debian"
     - name: change ownership to tomcat user
       ansible.builtin.file:
         path: "{{ home_dir }}"
@@ -74,7 +68,6 @@
         recurse: yes
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-      when: ansible_facts['os_family']=="Debian"
     - name: make all shell scripts executable
       ansible.builtin.file:
          path: '{{ item.path }}'
@@ -82,14 +75,12 @@
          group: "{{ user_name }}"
          mode: '0755'
       loop: "{{ sh_files_tomcat_bin.files }}"
-      when: ansible_facts['os_family']=="Debian"
     - name: copy tomcat service file
       ansible.builtin.template:
         src: tomcat.service.j2
         dest: "{{ tomcat_service_location }}"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-      when: ansible_facts['os_family']=="Debian"
       notify:
         - to reload,enable and start service
     - name: Force all notified handlers to run at this point, not waiting for normal sync points
@@ -98,14 +89,12 @@
       ansible.builtin.systemd:
         name: 'tomcat.service'
         state: 'started'
-      when: ansible_facts['os_family']=="Debian"
     - name: create tomcat user file
       ansible.builtin.template:
         src: 'tomcat_user.xml.j2'
         dest: "{{ tomcat_latest }}/{{ tomcat_user_relatice }}"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-      when: ansible_facts['os_family']=="Debian"
       notify:
         - to reload,enable and start service
     - name: added manager and host manager context to access from all ip address
@@ -114,7 +103,6 @@
         dest: "{{ item }}"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-      when: ansible_facts['os_family']=="Debian"
       loop: "{{ tomcat_context_files_locations }}"
       notify:
         - to reload,enable and start service
@@ -122,7 +110,6 @@
       ansible.builtin.get_url:
         url: "{{ deploy_url }}"
         dest: "{{ tomcat_latest }}/webapps/{{ deploy_filename }}"
-      when: ansible_facts['os_family'] == "Debian"
       notify:
         - to reload,enable and start service
   handlers:
@@ -132,4 +119,3 @@
         daemon_reload: yes
         enabled: yes
         state: restarted
-      when: ansible_facts['os_family']=="Debian"

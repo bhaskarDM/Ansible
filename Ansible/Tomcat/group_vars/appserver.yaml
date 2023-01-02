@@ -1,0 +1,17 @@
+home_dir: /opt/tomcat
+user_name: tomcat
+default_shell: /bin/false
+tomcat_version: 9.0.70
+tomcat_latest: /opt/tomcat/latest
+tomcat_bin_directory: /opt/tomcat/latest/bin/
+tomcat_service_location: /etc/systemd/system/tomcat.service
+java_home: /usr/lib/jvm/java-11-openjdk-amd64
+tomcat_admin_user: devops
+tomcat_admin_password: devops
+tomcat_user_relatice: conf/tomcat-users.xml
+tomcat_context_regex: ".*"
+tomcat_context_files_locations:
+  - /opt/tomcat/latest/webapps/manager/META-INF/context.xml
+  - /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
+deploy_filename: jenkins.war
+deploy_url: https://mirrors.tuna.tsinghua.edu.cn/jenkins/war-stable/2.332.1/jenkins.war
