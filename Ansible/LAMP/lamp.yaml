@@ -1,0 +1,12 @@
+---
+- name: install lamp
+  become: yes
+  hosts: all
+  tasks:
+    - name: to update
+      ansible.builtin.apt:
+        update_cache: yes
+    - name: install apache
+      ansible.builtin.package:
+        name: apache2
+        state: present
