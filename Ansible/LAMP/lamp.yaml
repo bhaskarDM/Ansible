@@ -2,6 +2,7 @@
 - name: install lamp
   become: yes
   hosts: all
+  php_page_location: /var/www/html/info.php
   tasks:
     - name: to update
       ansible.builtin.apt:
@@ -10,6 +11,8 @@
       ansible.builtin.package:
         name: apache2
         state: present
+      notify:
+        - ensure apache in enabled and restarted
     - name: to install packages
       ansible.builtin.package:
         name: "{{ item }}"
@@ -17,3 +20,16 @@
       loop:
         - php
         - libapache2-mod-php
+      notify:
+        - ensure apache in enabled and restarted
+    - name: copy php page
+      ansible.builtin.copy:
+        src: www/info.php
+        dest: "{{ php_page_location }}"
+      notify:
+        - ensure apache in enabled and restarted
+    - name: ensure apache in enabled and restarted
+      ansible.builtin.service:
+        name: apache2
+        enabled: yes
+        state: restarted
