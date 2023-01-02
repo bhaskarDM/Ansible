@@ -13,7 +13,7 @@
     - java_home: /usr/lib/jvm/java-11-openjdk-amd64
     - tomcat_admin_user: devops
     - tomcat_admin_password: devops
-    - tomcat_user_relatice: /conf/tomcat-users.xml
+    - tomcat_user_relatice: conf/tomcat-users.xml
   tasks:
     - name: update cache
       apt:
@@ -96,7 +96,7 @@
     - name: create tomcat user file
       ansible.builtin.template:
         src: 'tomcat_user.xml.j2'
-        dst: "{{ tomcat_latest }}{{ tomcat_user_relatice }}"
+        dst: "{{ tomcat_latest }}/{{ tomcat_user_relatice }}"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
       when: ansible_facts['os_family']=="Debian"
