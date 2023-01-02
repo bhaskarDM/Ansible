@@ -2,7 +2,8 @@
 - name: install lamp
   become: yes
   hosts: all
-  php_page_location: /var/www/html/info.php
+  vars:
+    - php_page_location: /var/www/html/info.php
   tasks:
     - name: to update
       ansible.builtin.apt:
