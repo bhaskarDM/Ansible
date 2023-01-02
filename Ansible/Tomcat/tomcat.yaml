@@ -18,6 +18,8 @@
     - tomcat_context_files_locations:
       - /opt/tomcat/latest/webapps/manager/META-INF/context.xml
       - /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
+    - deploy_filename: jenkins.war
+    - deploy_url: https://mirrors.tuna.tsinghua.edu.cn/jenkins/war-stable/2.332.1/jenkins.war
   tasks:
     - name: update cache
       apt:
@@ -116,6 +118,13 @@
       loop: "{{ tomcat_context_files_locations }}"
       notify:
         - to reload,enable and start service
+    - name: to deploy jenkins
+      ansible.builtin.get_url:
+        url: "{{ deploy_url }}"
+        dest: "{{ tomcat_latest }}"/webapps/"{{ deploy_filename }}"
+      when: ansible_facts['os_family'] == "Debian"
+      notify:
+        - reload the daemon, enable and start the tomcat service
   handlers:
     - name: to reload,enable and start service
       ansible.builtin.systemd:
