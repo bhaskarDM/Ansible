@@ -95,7 +95,7 @@
       when: ansible_facts['os_family']=="Debian"
     - name: create tomcat user file
       ansible.builtin.template:
-        src: 'tomcat_user.xml.j2'
+        src: 'tomcat-user.xml.j2'
         dst: "{{ tomcat_latest }}/{{ tomcat_user_relatice }}"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
