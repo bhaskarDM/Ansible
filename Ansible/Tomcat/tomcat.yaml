@@ -14,6 +14,10 @@
     - tomcat_admin_user: devops
     - tomcat_admin_password: devops
     - tomcat_user_relatice: conf/tomcat-users.xml
+    - tomcat_context_regex: ".*"
+    - tomcat_context_files_locations:
+      - /opt/tomcat/latest/webapps/manager/META-INF/context.xml
+      - /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
   tasks:
     - name: update cache
       apt:
@@ -100,6 +104,16 @@
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
       when: ansible_facts['os_family']=="Debian"
+      notify:
+        - to reload,enable and start service
+    - name: added manager and host manager context to access from all ip address
+      ansible.builtin.template:
+        src: 'manager.xml.j2'
+        dest: "{{ item }}"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+      when: ansible_facts['os_family']=="Debian"
+      loop: "{{ tomcat_context_files_locations }}"
       notify:
         - to reload,enable and start service
   handlers:
