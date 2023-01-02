@@ -29,6 +29,7 @@
         dest: "{{ php_page_location }}"
       notify:
         - ensure apache in enabled and restarted
+  handlers:
     - name: ensure apache in enabled and restarted
       ansible.builtin.service:
         name: apache2
