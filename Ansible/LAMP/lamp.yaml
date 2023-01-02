@@ -2,10 +2,6 @@
 - name: install lamp
   become: yes
   hosts: all
-  packages:
-    - php
-    - libapache2-mod-php
-    - php-mysql
   tasks:
     - name: to update
       ansible.builtin.apt:
@@ -18,4 +14,6 @@
       ansible.builtin.package:
         name: "{{ item }}"
         state: present
-      loop: "{{ packages }}"
+      loop:
+        - php
+        - libapache2-mod-php
