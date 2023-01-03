@@ -2,7 +2,6 @@
 - name: install mysql
   become: yes
   hosts: all
-  tasks:
-    roles:
-      - role: geerlingguy.mysql
+  roles:
+    - role: geerlingguy.mysql
      
