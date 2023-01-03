@@ -1,0 +1,7 @@
+---
+- name: install postgress
+  become: yes
+  hosts: all
+  roles:
+    - role: buluma.postgres
+     
