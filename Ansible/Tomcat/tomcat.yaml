@@ -33,7 +33,7 @@
     - name: install java
       ansible.builtin.package:
         update_cache: yes
-        name: openjdk-11-jdk
+        name: "{{ java_package }}"
         state: present
     - name: create a system user
       ansible.builtin.user:
